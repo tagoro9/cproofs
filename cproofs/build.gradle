@@ -1,4 +1,5 @@
 apply plugin: 'android'
+apply plugin: 'robolectric'
 
 android {
     compileSdkVersion 19
@@ -23,4 +24,41 @@ dependencies {
     compile 'com.android.support:support-v4:19.0.1'
     compile 'com.android.support:appcompat-v7:19.0.1'
     compile 'com.madgag:scprov-jdk15:1.46.99.3-UNOFFICIAL-ROBERTO-RELEASE'
+    instrumentTestCompile 'org.robolectric:robolectric:2.+'
+    instrumentTestCompile 'junit:junit:4.+'
+}
+
+task addTest {
+    def src = ['src/test/java']
+    def file = file("cproofs.iml")
+
+    doLast {
+        //try {
+            def parsedXml = (new XmlParser()).parse(file)
+            def node = parsedXml.component[1].content[0]
+            src.each {
+                def path = 'file://$MODULE_DIR$/' + "${it}"
+                def set = node.find { it.@url == path }
+                if (set == null) {
+                    new Node(node, 'sourceFolder', ['url': 'file://$MODULE_DIR$/' + "${it}", 'isTestSource': "true"])
+                    def writer = new StringWriter()
+                    new XmlNodePrinter(new PrintWriter(writer)).print(parsedXml)
+                    file.text = writer.toString()
+                }
+            }
+        /*} catch (FileNotFoundException e) {
+            // nop, iml not found
+        }*/
+    }
+}
+
+// always do the addtest on prebuild
+gradle.projectsEvaluated {
+    preBuild.dependsOn(addTest)
+}
+
+// prevent the "superClassName is empty" error for classes not annotated as tests
+tasks.withType(Test) {
+    scanForTestClasses = false
+    include "**/*Test.class" // whatever Ant pattern matches your test class files
 }
