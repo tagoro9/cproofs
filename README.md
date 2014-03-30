@@ -10,7 +10,7 @@ implemented to verify such proofs.
 
 This mobile application will receive the proofs information from the PC by scanning **QR codes** presented
 in the PC screen or **files** in the user smartphone, execute the required computations to verify
-them, and inform the voter of the result of the verification. Given:
+them, and inform the voter of the result of the verification.
 
 The app will read sequentially several QRs or files to gather different input data, present the voter
 to input additional data for the verification and finally execute the mathematical operations for
@@ -34,4 +34,4 @@ show a command from which we need to pick the classpath arg.
 5. Create a JUnit run configuration pointing to the directory: `Cproofs/cproofs/src/test/java`
 6. Add the recently created gradle run configuration to the before launch Junit run configuration
  we just created.
- 7. Tests should be running by now.
+7. Tests should be running by now.
