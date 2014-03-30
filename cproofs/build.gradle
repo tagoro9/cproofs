@@ -24,6 +24,7 @@ dependencies {
     compile 'com.android.support:support-v4:19.0.1'
     compile 'com.android.support:appcompat-v7:19.0.1'
     compile 'com.madgag:scprov-jdk15:1.46.99.3-UNOFFICIAL-ROBERTO-RELEASE'
+    compile 'org.roboguice:roboguice:2.0'
     instrumentTestCompile 'org.robolectric:robolectric:2.+'
     instrumentTestCompile 'junit:junit:4.+'
 }
