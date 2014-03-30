@@ -1,4 +1,4 @@
-package com.scytl.cproofs;
+package com.scytl.cproofs.activities;
 
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
@@ -10,6 +10,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
+
+import com.scytl.cproofs.R;
 
 public class MainActivity extends ActionBarActivity {
 
