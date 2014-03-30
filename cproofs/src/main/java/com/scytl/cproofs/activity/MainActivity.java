@@ -13,6 +13,7 @@ import android.os.Build;
 import android.widget.TextView;
 
 import com.scytl.cproofs.R;
+import com.scytl.cproofs.fragment.MainFragment;
 
 import roboguice.activity.RoboActivity;
 import roboguice.activity.RoboFragmentActivity;
@@ -27,7 +28,7 @@ public class MainActivity extends RoboFragmentActivity {
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
+                    .add(R.id.container, new MainFragment())
                     .commit();
         }
     }
@@ -52,26 +53,4 @@ public class MainActivity extends RoboFragmentActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends RoboFragment {
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            return rootView;
-        }
-
-        @Override
-        public void onViewCreated(View view, Bundle savedInstanceState) {
-            super.onViewCreated(view, savedInstanceState);
-        }
-    }
-
 }
