@@ -34,4 +34,5 @@ show a command from which we need to pick the classpath arg.
 5. Create a JUnit run configuration pointing to the directory: `Cproofs/cproofs/src/test/java`
 6. Add the recently created gradle run configuration to the before launch Junit run configuration
  we just created.
-7. Tests should be running by now.
+7. Add the modified classpath to the VM Options setting.
+8. Tests should be running by now.
