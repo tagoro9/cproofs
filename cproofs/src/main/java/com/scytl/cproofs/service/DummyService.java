@@ -2,41 +2,21 @@ package com.scytl.cproofs.service;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.content.Context;
-import android.util.Log;
 
 import com.scytl.cproofs.crypto.ElGamal.ElGamalExtendedParameterSpec;
 import com.scytl.cproofs.crypto.ElGamal.ElGamalMessage;
 import com.scytl.cproofs.crypto.Message;
 import com.scytl.cproofs.crypto.Parameters;
+import com.scytl.cproofs.crypto.Schnorr.SchnorrSignature;
+import com.scytl.cproofs.crypto.Signature;
 import com.scytl.cproofs.vote.ElGamalVote;
 import com.scytl.cproofs.vote.Vote;
 
-import org.spongycastle.crypto.engines.ElGamalEngine;
-import org.spongycastle.crypto.params.ElGamalKeyParameters;
-import org.spongycastle.jce.interfaces.ElGamalPublicKey;
 import org.spongycastle.jce.provider.BouncyCastleProvider;
-import org.spongycastle.jce.spec.ElGamalKeySpec;
-import org.spongycastle.jce.spec.ElGamalParameterSpec;
-import org.spongycastle.jce.spec.ElGamalPrivateKeySpec;
-import org.spongycastle.jce.spec.ElGamalPublicKeySpec;
 
+import java.io.Serializable;
 import java.math.BigInteger;
-import java.nio.ByteBuffer;
-import java.security.InvalidKeyException;
-import java.security.Key;
-import java.security.KeyFactory;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
 import java.security.Security;
-import java.security.spec.InvalidKeySpecException;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -48,12 +28,12 @@ import javax.crypto.NoSuchPaddingException;
 public class DummyService extends IntentService {
     // TODO: Rename actions, choose action names that describe tasks that this
     // IntentService can perform, e.g. ACTION_FETCH_NEW_ITEMS
-    private static final String ACTION_FOO = "com.scytl.cproofs.service.action.FOO";
-    private static final String ACTION_BAZ = "com.scytl.cproofs.service.action.BAZ";
+    private static final String ACTION_FOO = "com.scytl.cproofs.test.service.action.FOO";
+    private static final String ACTION_BAZ = "com.scytl.cproofs.test.service.action.BAZ";
 
     // TODO: Rename parameters
-    private static final String EXTRA_PARAM1 = "com.scytl.cproofs.service.extra.PARAM1";
-    private static final String EXTRA_PARAM2 = "com.scytl.cproofs.service.extra.PARAM2";
+    private static final String EXTRA_PARAM1 = "com.scytl.cproofs.test.service.extra.PARAM1";
+    private static final String EXTRA_PARAM2 = "com.scytl.cproofs.test.service.extra.PARAM2";
 
     public DummyService() {
         super("DummyService");
@@ -73,8 +53,8 @@ public class DummyService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        //BigInteger gamma= new BigInteger("26977040468970344916817436272560236319864700366615875034090276748359846158795", 10);
-        //BigInteger phi= new BigInteger("48264358234471450298543974766103156025093602668074261823205643879340285575404", 10);
+        BigInteger gamma= new BigInteger("26977040468970344916817436272560236319864700366615875034090276748359846158795", 10);
+        BigInteger phi= new BigInteger("48264358234471450298543974766103156025093602668074261823205643879340285575404", 10);
         //BigInteger gamma= new BigInteger("51985929438529043069546285295857790390668654177801604555117571429739731600066", 10);
         //BigInteger phi= new BigInteger("86039887611578881074100029400010860188846173427938638709000291207269094356115", 10);
 
@@ -84,12 +64,17 @@ public class DummyService extends IntentService {
         BigInteger q = new BigInteger("49988235082587694010186309348329567779500270647159551480362346316129165557011", 10);
         BigInteger y = new BigInteger("38899979672714366756637464142222961257539929693695420461084339906663818916907", 10);
         BigInteger x = new BigInteger("37287667606334117345303432074042478191789701966842378421629338052171976701925", 10);
-        BigInteger gamma= new BigInteger("84102809714541700453291794954667262606709961488098848034143805286538840450669", 10);
-        BigInteger phi= new BigInteger("21125054694553918344036988366869566213933640286564391271536277560858896175426", 10);
+        //BigInteger gamma= new BigInteger("84102809714541700453291794954667262606709961488098848034143805286538840450669", 10);
+        //BigInteger phi= new BigInteger("21125054694553918344036988366869566213933640286564391271536277560858896175426", 10);
+        BigInteger h = new BigInteger("14131526226646561642384616699957512305556662412002933491317543366457625876518", 10);
+        BigInteger t = new BigInteger("12542071100668895002512023673177182858510287474115109878279370117190653327886", 10);
         // Initialization. The VoteReader will provide those too
+        Signature signature = new SchnorrSignature(h, t);
         Parameters parameters = new ElGamalExtendedParameterSpec(p, g, q);
         Message message = new ElGamalMessage(phi, gamma);
-        Vote vote = new ElGamalVote(parameters, message, x, 1);
+        Vote vote = new ElGamalVote(parameters, message, signature, y, x, 1);
+        //Message enc = vote.encrypt();
+        //BigInteger dec = (BigInteger) vote.decrypt();
         vote.verify();
     }
 }
