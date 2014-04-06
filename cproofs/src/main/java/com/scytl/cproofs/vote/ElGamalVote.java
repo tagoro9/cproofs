@@ -201,7 +201,10 @@ public class ElGamalVote implements Vote {
         BigInteger t = signature.getT();
         BigInteger h = signature.getH();
         BigInteger c1 = parameters.getG().modPow(t, parameters.getP()).multiply(message.getGamma().modPow(h, parameters.getP())).mod(parameters.getP());
-        BigInteger c2 = publicKey.getY().modPow(t, parameters.getP()).multiply((message.getPhi().divide(choice)).modPow(h, parameters.getP())).mod(parameters.getP());
+        BigInteger c2 = publicKey.getY().modPow(t, parameters.getP());
+        BigInteger c21 = message.getPhi().multiply(choice.modInverse(parameters.getP())).mod(parameters.getP());
+        BigInteger c22 = c21.modPow(h, parameters.getP());
+        c2 = c2.multiply(c22).mod(parameters.getP());
         BigInteger hash = concatAndHash(parameters.getG(), publicKey.getY(), c1, c2, message.getGamma(), message.getPhi());
         return false;
     }
