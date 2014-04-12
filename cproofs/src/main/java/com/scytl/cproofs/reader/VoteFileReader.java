@@ -37,7 +37,8 @@ public class VoteFileReader implements VoteReader {
         try {
             String jsonVoteData = org.apache.commons.io.FileUtils.readFileToString(voteFile);
             Gson gson = new Gson();
-            ElGamalVote[] votes = gson.fromJson(jsonVoteData, ElGamalVote[].class);
+            Vote[] votes = gson.fromJson(jsonVoteData, ElGamalVote[].class);
+            Boolean verified = votes[0].verify();
         } catch (IOException e) {
             e.printStackTrace();
         }

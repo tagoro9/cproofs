@@ -117,9 +117,9 @@ public class ElGamalVote implements Vote {
     public void setParameters(ElGamalExtendedParameterSpec parameters) {
         this.parameters = parameters;
     }
-
+    /*
     public Message encrypt() {
-        /*try {
+        try {
             cipher.init(Cipher.ENCRYPT_MODE, keyFactory.generatePublic(publicKey));
         } catch (InvalidKeyException e) {
             e.printStackTrace();
@@ -141,7 +141,7 @@ public class ElGamalVote implements Vote {
         System.arraycopy(output, 0, gammaBytes, 0, gammaBytes.length);
         System.arraycopy(output, gammaBytes.length, phiBytes, 0, phiBytes.length);
         message = new ElGamalMessage(new BigInteger(phiBytes), new BigInteger(gammaBytes));
-        return message;*/
+        return message;
         BigInteger                  input = new BigInteger(1, choice.toByteArray());
         Random random = new SecureRandom();
         BigInteger p = parameters.getP();
@@ -212,7 +212,7 @@ public class ElGamalVote implements Vote {
             }
         } while (!valid);
         return signature;
-    }
+    }*/
 
     @Override
     public Boolean verify() {
@@ -220,12 +220,12 @@ public class ElGamalVote implements Vote {
         BigInteger t = signature.getT();
         BigInteger h = signature.getH();
         BigInteger c1 = parameters.getG().modPow(t, parameters.getP()).multiply(message.getGamma().modPow(h, parameters.getP())).mod(parameters.getP());
-        BigInteger c2 = publicKey.getY().modPow(t, parameters.getP());
+        BigInteger c2 = y.modPow(t, parameters.getP());
         BigInteger c21 = message.getPhi().multiply(choice.modInverse(parameters.getP())).mod(parameters.getP());
         BigInteger c22 = c21.modPow(h, parameters.getP());
         c2 = c2.multiply(c22).mod(parameters.getP());
-        BigInteger hash = concatAndHash(parameters.getG(), publicKey.getY(), c1, c2, message.getGamma(), message.getPhi());
-        return false;
+        BigInteger hash = concatAndHash(parameters.getG(), y, c1, c2, message.getGamma(), message.getPhi());
+        return hash.equals(h);
     }
 
     private BigInteger concatAndHash(BigInteger g, BigInteger y, BigInteger c1, BigInteger c2, BigInteger gamma, BigInteger phi) {

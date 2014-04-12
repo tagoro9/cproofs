@@ -15,6 +15,6 @@ public interface Vote {
     Serializable getChoice();
     Boolean verify();
     Signature getSignature();
-    Message encrypt();
-    Serializable decrypt();
+    /*Message encrypt();
+    Serializable decrypt();*/
 }
