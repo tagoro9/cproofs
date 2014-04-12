@@ -1,1 +1,1 @@
-include ':cproofs'
+include ':cproofs', 'validator'

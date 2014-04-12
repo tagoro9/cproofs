@@ -1,0 +1,8 @@
+apply plugin: 'java'
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    // Spongy Castle
+    compile 'com.madgag:scprov-jdk15:1.46.99.3-UNOFFICIAL-ROBERTO-RELEASE'
+    testCompile 'junit:junit:4.+'
+}
