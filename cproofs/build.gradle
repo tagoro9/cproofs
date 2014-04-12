@@ -2,7 +2,7 @@ apply plugin: 'android'
 
 android {
     compileSdkVersion 19
-    buildToolsVersion "19.0.1"
+    buildToolsVersion '19.0.1'
 
     defaultConfig {
         minSdkVersion 15
@@ -55,6 +55,5 @@ dependencies {
     compile 'com.android.support:support-v4:19.0.1'
     compile 'com.android.support:appcompat-v7:19.0.1'
     compile 'org.roboguice:roboguice:2.0'
-    // Spongy Castle
-    compile 'com.madgag:scprov-jdk15:1.46.99.3-UNOFFICIAL-ROBERTO-RELEASE'
+    compile project(':validator')
 }

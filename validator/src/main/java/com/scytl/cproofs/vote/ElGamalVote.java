@@ -8,6 +8,7 @@ import com.scytl.cproofs.crypto.Schnorr.SchnorrSignature;
 import com.scytl.cproofs.crypto.Signature;
 
 import org.spongycastle.jce.interfaces.ElGamalPrivateKey;
+import org.spongycastle.jce.provider.BouncyCastleProvider;
 import org.spongycastle.jce.spec.ElGamalPrivateKeySpec;
 import org.spongycastle.jce.spec.ElGamalPublicKeySpec;
 
@@ -21,6 +22,7 @@ import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.SecureRandom;
+import java.security.Security;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Random;
 
@@ -48,6 +50,10 @@ public class ElGamalVote implements Vote {
     private static BigInteger       ZERO = BigInteger.valueOf(0);
     private static BigInteger       ONE = BigInteger.valueOf(1);
     private static BigInteger       TWO = BigInteger.valueOf(2);
+
+    static {
+        Security.addProvider(new BouncyCastleProvider());
+    }
 
     public ElGamalVote(Parameters parameters, Message message, Signature signature, BigInteger y, int choice) {
         this.parameters = (ElGamalExtendedParameterSpec) parameters;

@@ -39,10 +39,6 @@ public class DummyService extends IntentService {
         super("DummyService");
     }
 
-    static {
-        Security.addProvider(new BouncyCastleProvider());
-    }
-
     public String bytesToHex(byte[] in) {
         final StringBuilder builder = new StringBuilder();
         for(byte b : in) {
