@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import com.ipaulpro.afilechooser.utils.FileUtils;
 import com.scytl.cproofs.R;
+import com.scytl.cproofs.reader.VoteFileReader;
+import com.scytl.cproofs.reader.VoteReader;
 import com.scytl.cproofs.service.DummyService;
 
 import roboguice.fragment.RoboFragment;
@@ -87,10 +89,13 @@ public class MainFragment extends RoboFragment {
                         final Uri uri = data.getData();
                         Log.i(TAG, "Uri = " + uri.toString());
                         try {
+
                             // Get the file path from the URI
                             final String path = FileUtils.getPath(getActivity(), uri);
                             Toast.makeText(getActivity(),
                                     "File Selected: " + path, Toast.LENGTH_LONG).show();
+                            VoteReader reader = new VoteFileReader(path);
+                            reader.read();
                         } catch (Exception e) {
                             Log.e("FileSelectorTestActivity", "File select error", e);
                         }

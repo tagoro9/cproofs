@@ -40,6 +40,8 @@ public class ElGamalVote implements Vote {
     private ElGamalMessage message;
     private SchnorrSignature signature;
     private BigInteger choice;
+    private BigInteger y;
+    private BigInteger x;
 
     private KeyFactory keyFactory;
     private Cipher cipher;
@@ -55,12 +57,7 @@ public class ElGamalVote implements Vote {
         Security.addProvider(new BouncyCastleProvider());
     }
 
-    public ElGamalVote(Parameters parameters, Message message, Signature signature, BigInteger y, int choice) {
-        this.parameters = (ElGamalExtendedParameterSpec) parameters;
-        this.message = (ElGamalMessage) message;
-        this.choice = BigInteger.valueOf(choice);
-        this.signature = (SchnorrSignature) signature;
-        publicKey = new ElGamalPublicKeySpec(y, this.parameters);
+    public ElGamalVote() {
         try {
             keyFactory = KeyFactory.getInstance("ElGamal", "SC");
         } catch (NoSuchAlgorithmException e) {
@@ -70,22 +67,22 @@ public class ElGamalVote implements Vote {
         }
     }
 
+    public ElGamalVote(Parameters parameters, Message message, Signature signature, BigInteger y, int choice) {
+        this();
+        this.parameters = (ElGamalExtendedParameterSpec) parameters;
+        this.message = (ElGamalMessage) message;
+        this.choice = BigInteger.valueOf(choice);
+        this.signature = (SchnorrSignature) signature;
+        this.y = y;
+    }
+
     public ElGamalVote(Parameters parameters, Message message, Signature signature, BigInteger y, BigInteger x, int choice) {
         this(parameters, message, signature, y, choice);
-        privateKey = new ElGamalPrivateKeySpec(x, this.parameters);
-        try {
-            cipher = Cipher.getInstance("ElGamal", "SC");
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (NoSuchProviderException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-        }
+        this.x = x;
     }
 
 
-        @Override
+    @Override
     public Serializable getChoice() {
         return choice;
     }
@@ -103,6 +100,22 @@ public class ElGamalVote implements Vote {
     @Override
     public Signature getSignature() {
         return signature;
+    }
+
+    public void setChoice(BigInteger choice) {
+        this.choice = choice;
+    }
+
+    public void setSignature(SchnorrSignature signature) {
+        this.signature = signature;
+    }
+
+    public void setMessage(ElGamalMessage message) {
+        this.message = message;
+    }
+
+    public void setParameters(ElGamalExtendedParameterSpec parameters) {
+        this.parameters = parameters;
     }
 
     public Message encrypt() {
