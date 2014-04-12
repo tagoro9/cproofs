@@ -12,8 +12,6 @@ import com.scytl.cproofs.crypto.Signature;
 import com.scytl.cproofs.vote.ElGamalVote;
 import com.scytl.cproofs.vote.Vote;
 
-import org.spongycastle.jce.provider.BouncyCastleProvider;
-
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.security.Security;

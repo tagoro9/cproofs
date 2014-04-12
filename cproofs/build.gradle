@@ -56,4 +56,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:19.0.1'
     compile 'org.roboguice:roboguice:2.0'
     compile project(':validator')
+    compile project(':aFileChooser')
 }
