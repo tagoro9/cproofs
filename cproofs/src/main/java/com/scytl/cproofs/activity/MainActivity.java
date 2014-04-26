@@ -1,26 +1,17 @@
 package com.scytl.cproofs.activity;
 
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.os.Build;
-import android.widget.TextView;
 
 import com.scytl.cproofs.R;
 import com.scytl.cproofs.fragment.MainFragment;
 
-import roboguice.activity.RoboActivity;
 import roboguice.activity.RoboFragmentActivity;
-import roboguice.fragment.RoboFragment;
-import roboguice.inject.InjectView;
 
 public class MainActivity extends RoboFragmentActivity {
+
+    private static final int REQUEST_CODE = 6384;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +19,7 @@ public class MainActivity extends RoboFragmentActivity {
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new MainFragment())
+                    .add(R.id.container, new MainFragment(), "main_fragment")
                     .commit();
         }
     }
@@ -48,7 +39,11 @@ public class MainActivity extends RoboFragmentActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_read_file) {
+            MainFragment fragment = (MainFragment) getSupportFragmentManager().findFragmentByTag("main_fragment");
+            fragment.launchReadFileIntent();
+        }
+        if (id == R.id.action_read_qr) {
             return true;
         }
         return super.onOptionsItemSelected(item);

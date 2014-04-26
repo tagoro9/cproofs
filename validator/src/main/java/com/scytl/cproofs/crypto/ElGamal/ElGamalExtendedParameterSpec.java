@@ -15,11 +15,18 @@ public class ElGamalExtendedParameterSpec extends ElGamalParameterSpec implement
 
     public ElGamalExtendedParameterSpec(BigInteger p, BigInteger g, BigInteger q) {
         super(p, g);
-        // Check if p is 2q +1
-        if (!p.equals(q.multiply(BigInteger.valueOf(2L)).add(BigInteger.ONE))) {
-            throw new IllegalArgumentException("Prime p should equal 2q +1");
+        if (!check()) {
+            throw new IllegalArgumentException("P should equal 2q + 1");
         }
         this.q = q;
+    }
+
+    @Override
+    public boolean check() {
+        if (!getP().equals(q.multiply(BigInteger.valueOf(2L)).add(BigInteger.ONE))) {
+            return false;
+        }
+        return true;
     }
 
     public BigInteger getQ() {

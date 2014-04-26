@@ -3,6 +3,9 @@ package com.scytl.cproofs.vote;
 import com.scytl.cproofs.crypto.Message;
 import com.scytl.cproofs.crypto.Parameters;
 import com.scytl.cproofs.crypto.Signature;
+import com.scytl.cproofs.crypto.exceptions.CProofsException;
+import com.scytl.cproofs.crypto.exceptions.InvalidParametersException;
+import com.scytl.cproofs.crypto.exceptions.InvalidSignatureException;
 
 import java.io.Serializable;
 
@@ -12,9 +15,6 @@ import java.io.Serializable;
 public interface Vote {
     Parameters getParameters();
     Message getMessage();
-    Serializable getChoice();
-    Boolean verify();
+    Boolean verify(String choice) throws InvalidParametersException, InvalidSignatureException;
     Signature getSignature();
-    /*Message encrypt();
-    Serializable decrypt();*/
 }

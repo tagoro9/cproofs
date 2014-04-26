@@ -11,6 +11,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by victor on 4/12/14.
@@ -32,13 +35,13 @@ public class VoteFileReader implements VoteReader {
     }
 
     @Override
-    public Vote read() {
+    public List<Vote> read() {
         File voteFile = new File(path);
         try {
             String jsonVoteData = org.apache.commons.io.FileUtils.readFileToString(voteFile);
             Gson gson = new Gson();
             Vote[] votes = gson.fromJson(jsonVoteData, ElGamalVote[].class);
-            Boolean verified = votes[0].verify();
+            return new ArrayList<Vote>(Arrays.asList(votes));
         } catch (IOException e) {
             e.printStackTrace();
         }
