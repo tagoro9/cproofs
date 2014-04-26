@@ -7,5 +7,10 @@
     <string name="trigger_button">Trigger</string>
     <string name="file_button">Select file</string>
     <string name="chooser_title">Lorem ipsum</string>
+    <string name="action_read_qr">read qr</string>
+    <string name="action_read_file">read file</string>
+    <string name="text_choice_placeholder">Enter your choice</string>
+    <string name="validate_button_text">Validate</string>
+    <string name="no_file_text">To validate a vote you need to read a file or a QR code.</string>
 
 </resources>

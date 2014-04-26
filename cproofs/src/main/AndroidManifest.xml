@@ -34,6 +34,8 @@
 
                 <data android:mimeType="*/*" />
             </intent-filter>
+            <meta-data android:name="android.support.UI_OPTIONS"
+                android:value="splitActionBarWhenNarrow" />
         </activity>
 
         <service
