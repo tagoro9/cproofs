@@ -59,4 +59,5 @@ dependencies {
     compile project(':aFileChooser')
     compile 'org.apache.commons:commons-io:1.3.2'
     compile 'com.google.code.gson:gson:2.2.4'
+    compile project(':CardsUILib')
 }

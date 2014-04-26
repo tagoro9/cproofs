@@ -41,15 +41,27 @@
 
         </LinearLayout>
 
-
-        <TextView
-            android:layout_width="fill_parent"
+        <LinearLayout
+            android:id="@+id/current_file_container"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/file_text"/>
+            android:visibility="invisible"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingRight="10dp"
+                android:text="@string/current_file"/>
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="whatever"
+                android:id="@+id/file_text"/>
+        </LinearLayout>
 
             <RelativeLayout android:id="@+id/no_file_layout"
-                android:layout_width="fill_parent"
-                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
                 android:gravity="center"
                 android:layout_weight="2"
                 xmlns:android="http://schemas.android.com/apk/res/android">
@@ -72,6 +84,28 @@
                     android:alpha="0.5"
                     android:text="@string/no_file_text"/>
             </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/cards_container"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:layout_height="match_parent">
+
+            <com.fima.cardsui.views.CardUI
+                android:id="@+id/cardsview"
+                android:layout_width="match_parent"
+                android:layout_weight="3"
+                android:layout_height="match_parent" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:id="@+id/clear_button"
+                android:text="@string/clear_button"/>
+
+            </LinearLayout>
 
     </LinearLayout>
 

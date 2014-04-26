@@ -1,3 +1,2 @@
-include ':cproofs', 'validator'
-include ':aFileChooser'
+include ':cproofs', 'validator', 'CardsUILib'
 include ':aFileChooser'

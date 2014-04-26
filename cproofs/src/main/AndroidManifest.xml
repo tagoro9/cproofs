@@ -18,7 +18,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="com.ipaulpro.afilechooser.FileChooserActivity"
             android:enabled="@bool/use_activity"
@@ -34,14 +33,12 @@
 
                 <data android:mimeType="*/*" />
             </intent-filter>
-            <meta-data android:name="android.support.UI_OPTIONS"
+
+            <meta-data
+                android:name="android.support.UI_OPTIONS"
                 android:value="splitActionBarWhenNarrow" />
         </activity>
 
-        <service
-            android:name="com.scytl.cproofs.service.DummyService"
-            android:exported="false" >
-        </service>
     </application>
 
 </manifest>
