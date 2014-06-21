@@ -1,5 +1,6 @@
 package com.scytl.cproofs.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -42,6 +43,10 @@ public class MainActivity extends RoboFragmentActivity {
         if (id == R.id.action_read_file) {
             MainFragment fragment = (MainFragment) getSupportFragmentManager().findFragmentByTag("main_fragment");
             fragment.launchReadFileIntent();
+        }
+        if (id == R.id.action_settings) {
+            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+            startActivity(intent);
         }
         if (id == R.id.action_read_qr) {
             return true;
