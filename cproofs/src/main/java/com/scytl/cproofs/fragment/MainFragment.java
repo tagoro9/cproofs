@@ -1,6 +1,8 @@
 package com.scytl.cproofs.fragment;
 
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,9 +24,13 @@ import com.fima.cardsui.objects.CardStack;
 import com.fima.cardsui.views.CardUI;
 import com.ipaulpro.afilechooser.utils.FileUtils;
 import com.scytl.cproofs.R;
+import com.scytl.cproofs.activity.SettingsActivity;
 import com.scytl.cproofs.cards.VoteCard;
+import com.scytl.cproofs.crypto.ElGamal.ElGamalExtendedParameterSpec;
 import com.scytl.cproofs.crypto.exceptions.InvalidParametersException;
 import com.scytl.cproofs.crypto.exceptions.InvalidSignatureException;
+import com.scytl.cproofs.reader.SettingsFileReader;
+import com.scytl.cproofs.reader.SettingsReader;
 import com.scytl.cproofs.reader.VoteFileReader;
 import com.scytl.cproofs.reader.VoteReader;
 import com.scytl.cproofs.vote.Vote;
@@ -68,8 +74,10 @@ public class MainFragment extends RoboFragment {
 
     private List<Vote> votes;
 
+    private ElGamalExtendedParameterSpec parameters;
+
     private static final int REQUEST_CODE = 6384;
-    private static final String TAG = "FileChooserExampleActivity";
+    private static final String TAG = "MainFragmentActivity";
 
     public MainFragment() {
         stacks = new HashMap<String, CardStack>();
@@ -104,6 +112,31 @@ public class MainFragment extends RoboFragment {
             }
         });
         configureCards();
+        // Read parameters. If there are no parameters, redirect to settings page
+        // Read application parameters
+        SettingsReader settingsReader = new SettingsFileReader();
+        parameters = settingsReader.read(SettingsFileReader.SETTINGS_FILE, getActivity());
+        if (null == parameters) {
+            // Show a dialog telling the user to load parameters
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle("Parameters missing");
+            builder.setMessage("There are no cipher parameters stored. You need to provide one");
+            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    Intent intent = new Intent(getActivity(), SettingsActivity.class);
+                    startActivity(intent);
+                }
+            });
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog,int id) {
+                    // cancel the alert box and put a Toast to the user
+                    dialog.cancel();
+                    Toast.makeText(getActivity().getApplicationContext(), "There are no parameters stored",
+                            Toast.LENGTH_LONG).show();
+                }
+            });
+            builder.show();
+        }
     }
 
     private void clearCards() {
@@ -178,7 +211,7 @@ public class MainFragment extends RoboFragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if (choiceText.getText().length() > 0 && null != votes && votes.size() > 0) {
+                if (choiceText.getText().length() > 0 && null != votes && votes.size() > 0 && null != parameters) {
                     validateButton.setEnabled(true);
                 }
                 else {
@@ -217,12 +250,15 @@ public class MainFragment extends RoboFragment {
                             final String path = FileUtils.getPath(getActivity(), uri);
                             Toast.makeText(getActivity(),
                                     "File Selected: " + path, Toast.LENGTH_LONG).show();
+                            // Get parameters
+                            SettingsReader settings = new SettingsFileReader();
+                            parameters = settings.read(SettingsFileReader.SETTINGS_FILE, getActivity());
                             // Get file name
                             String fileName = path.substring(path.lastIndexOf("/") + 1);
                             // Update view to notify user what file is loaded at the moment
                             fileText.setText(fileName);
-                            // Create a file Reader with the selected path
-                            VoteReader reader = new VoteFileReader(path);
+                            // Create a file Reader with the selected path and current parameters
+                            VoteReader reader = new VoteFileReader(path, parameters);
                             // Display file text
                             currentFileContainer.setVisibility(View.VISIBLE);
                             // Read the votes in the file

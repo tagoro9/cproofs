@@ -4,6 +4,7 @@ import android.provider.MediaStore;
 
 import com.google.gson.Gson;
 import com.ipaulpro.afilechooser.utils.FileUtils;
+import com.scytl.cproofs.crypto.ElGamal.ElGamalExtendedParameterSpec;
 import com.scytl.cproofs.vote.ElGamalVote;
 import com.scytl.cproofs.vote.Vote;
 
@@ -21,9 +22,11 @@ import java.util.List;
 public class VoteFileReader implements VoteReader {
 
     private String path;
+    private ElGamalExtendedParameterSpec parameters;
 
-    public VoteFileReader(String path) {
+    public VoteFileReader(String path, ElGamalExtendedParameterSpec parameters) {
         this.path = path;
+        this.parameters = parameters;
     }
 
     public String getPath() {
@@ -40,7 +43,11 @@ public class VoteFileReader implements VoteReader {
         try {
             String jsonVoteData = org.apache.commons.io.FileUtils.readFileToString(voteFile);
             Gson gson = new Gson();
-            Vote[] votes = gson.fromJson(jsonVoteData, ElGamalVote[].class);
+            ElGamalVote[] votes = gson.fromJson(jsonVoteData, ElGamalVote[].class);
+            // Se vote parameters to the ones stored in the app (ignoring the ones that could have been present in the vote file)
+            for (ElGamalVote vote : votes) {
+                vote.setParameters(parameters);
+            }
             return new ArrayList<Vote>(Arrays.asList(votes));
         } catch (IOException e) {
             e.printStackTrace();
