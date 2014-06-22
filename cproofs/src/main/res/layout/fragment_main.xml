@@ -7,105 +7,160 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:id="@+id/main_fragment"
+    android:background="@color/amethyst"
     tools:context="com.scytl.cproofs.activity.MainActivity$PlaceholderFragment">
 
+
+
     <LinearLayout
-        android:id="@+id/LinearLayout02"
-        android:layout_height="fill_parent"
+        android:id="@+id/main_layout"
+        android:layout_height="wrap_content"
         android:layout_width="fill_parent"
         android:orientation="vertical"
-        android:layout_alignParentBottom="true">
+        >
 
-        <LinearLayout
+        <RelativeLayout
+            android:id="@+id/main_logo"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:paddingTop="35dp"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_height="90dp"
+                android:layout_width="fill_parent"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/app_logo"
+                android:src="@drawable/locked"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:layout_marginTop="1dp"
+                android:layout_below="@+id/app_logo"
+                android:textAlignment="center"
+                android:id="@+id/app_title"
+                android:textColor="@color/white"
+                android:alpha="0.7"
+                android:text="Cproofs"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:textStyle="bold"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:layout_marginTop="0dp"
+                android:layout_below="@+id/app_title"
+                android:textAlignment="center"
+                android:id="@+id/app_description"
+                android:textColor="@color/white"
+                android:text="Vote validation"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/qr_button"
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:background="@drawable/rounded_button"
             >
 
-            <EditText
+            <ImageView
+                android:layout_height="50dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="@string/text_choice_placeholder"
-                android:drawableLeft="@drawable/tag"
-                android:drawablePadding="10dp"
-                android:id="@+id/choice_text"
-                android:layout_weight="2"/>
+                android:paddingLeft="10dip"
+                android:id="@+id/qr_button_img"
+                android:src="@drawable/camera"/>
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/validate_button_text"
-                android:enabled="false"
-                android:id="@+id/validate_button"
-                android:layout_weight="1"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/current_file_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            android:orientation="horizontal">
             <TextView
+                android:id="@+id/qr_button_text"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:paddingRight="10dp"
-                android:text="@string/current_file"/>
-            <TextView
-                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="whatever"
-                android:id="@+id/file_text"/>
-        </LinearLayout>
-
-            <RelativeLayout android:id="@+id/no_file_layout"
-                android:layout_width="match_parent"
-                android:layout_height="fill_parent"
-                android:gravity="center"
-                android:layout_weight="2"
-                xmlns:android="http://schemas.android.com/apk/res/android">
-                <ImageView
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:layout_centerHorizontal="true"
-                    android:id="@+id/image"
-                    android:alpha="0.5"
-                    android:src="@drawable/info"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="20dp"
-                    android:layout_centerInParent="true"
-                    android:gravity="center"
-                    android:layout_marginTop="3dp"
-                    android:layout_below="@+id/image"
-                    android:textAlignment="center"
-                    android:alpha="0.5"
-                    android:text="@string/no_file_text"/>
+                android:layout_marginLeft="2dp"
+                android:layout_toRightOf="@id/qr_button_img"
+                android:layout_gravity="center_vertical"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
+                android:text="Read QR code"
+                android:textStyle="bold"
+                android:textSize="18dp"
+                android:textColor="@color/amethyst" />
             </RelativeLayout>
 
-        <LinearLayout
-            android:id="@+id/cards_container"
-            android:layout_width="match_parent"
+        <RelativeLayout
+            android:id="@+id/file_button"
             android:orientation="vertical"
-            android:visibility="gone"
-            android:layout_height="match_parent">
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:background="@drawable/rounded_button"
+            >
 
-            <com.fima.cardsui.views.CardUI
-                android:id="@+id/cardsview"
-                android:layout_width="match_parent"
-                android:layout_weight="3"
-                android:layout_height="match_parent" />
+            <ImageView
+                android:layout_height="50dp"
+                android:layout_width="wrap_content"
+                android:paddingLeft="10dp"
+                android:id="@+id/file_button_img"
+                android:src="@drawable/document"/>
 
-            <Button
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/file_button_text"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:id="@+id/clear_button"
-                android:text="@string/clear_button"/>
+                android:layout_marginLeft="2dp"
+                android:layout_toRightOf="@id/file_button_img"
+                android:layout_gravity="center_vertical"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
+                android:text="Read from file"
+                android:textStyle="bold"
+                android:textSize="18dp"
+                android:textColor="@color/amethyst" />
+        </RelativeLayout>
 
-            </LinearLayout>
+        <EditText
+            android:id="@+id/choice_input"
+            android:hint="@string/text_choice_placeholder"
+            android:textColor="@color/amethyst"
+            android:textStyle="bold"
+            android:textSize="18dp"
+            android:layout_width="fill_parent"
+            android:padding="20dp"
+            android:visibility="invisible"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:gravity="center"
+            android:background="@drawable/rounded_button"
+            android:textColorHint="@color/amethyst"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/validate_button_text"
+            android:enabled="false"
+            android:id="@+id/validate_vote_button"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/rounded_button"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:textColor="@color/amethyst"
+            android:textStyle="bold"
+            android:textSize="18dp"
+            android:visibility="invisible"
+            android:layout_weight="1"/>
 
     </LinearLayout>
 

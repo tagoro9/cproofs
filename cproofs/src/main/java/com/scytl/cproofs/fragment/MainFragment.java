@@ -14,74 +14,52 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.fima.cardsui.objects.Card;
-import com.fima.cardsui.objects.CardStack;
-import com.fima.cardsui.views.CardUI;
 import com.ipaulpro.afilechooser.utils.FileUtils;
 import com.scytl.cproofs.R;
+import com.scytl.cproofs.activity.ResultActivity;
+import com.scytl.cproofs.activity.ScannerActivity;
 import com.scytl.cproofs.activity.SettingsActivity;
-import com.scytl.cproofs.cards.VoteCard;
 import com.scytl.cproofs.crypto.ElGamal.ElGamalExtendedParameterSpec;
 import com.scytl.cproofs.crypto.exceptions.InvalidParametersException;
 import com.scytl.cproofs.crypto.exceptions.InvalidSignatureException;
 import com.scytl.cproofs.reader.SettingsFileReader;
 import com.scytl.cproofs.reader.SettingsReader;
 import com.scytl.cproofs.reader.VoteFileReader;
+import com.scytl.cproofs.reader.VoteQrReader;
 import com.scytl.cproofs.reader.VoteReader;
 import com.scytl.cproofs.vote.Vote;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import javax.xml.transform.Result;
 
 import roboguice.fragment.RoboFragment;
 import roboguice.inject.InjectView;
 
 public class MainFragment extends RoboFragment {
 
-    @InjectView(R.id.file_text)
-    private TextView fileText;
-
-    @InjectView(R.id.choice_text)
+    @InjectView(R.id.choice_input)
     private EditText choiceText;
 
-    @InjectView(R.id.validate_button)
+    @InjectView(R.id.validate_vote_button)
     private Button validateButton;
 
-    @InjectView(R.id.no_file_layout)
-    private RelativeLayout noFileLayout;
+    @InjectView(R.id.qr_button)
+    private RelativeLayout qrButton;
 
-    @InjectView(R.id.cardsview)
-    private CardUI voteCards;
+    @InjectView(R.id.file_button)
+    private RelativeLayout fileButton;
 
-    @InjectView(R.id.cards_container)
-    private LinearLayout cardsContainer;
-
-    @InjectView(R.id.clear_button)
-    private Button clearButton;
-
-    @InjectView(R.id.current_file_container)
-    private LinearLayout currentFileContainer;
-
-    private Map<String, CardStack> stacks;
-
-    private List<Vote> votes;
+    private Vote vote;
 
     private ElGamalExtendedParameterSpec parameters;
 
-    private static final int REQUEST_CODE = 6384;
+    private static final int READ_FILE_REQUEST_CODE = 6384;
+    private static final int READ_QR_REQUEST_CODE = 9876;
     private static final String TAG = "MainFragmentActivity";
 
-    public MainFragment() {
-        stacks = new HashMap<String, CardStack>();
-    }
+    public MainFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -99,23 +77,28 @@ public class MainFragment extends RoboFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         choiceText.addTextChangedListener(createTextWatcher());
+        // Add listener to validate button
         validateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 validateVoteWithInput(choiceText.getText().toString());
             }
         });
-        clearButton.setOnClickListener(new View.OnClickListener() {
+        // Add listener to read buttons
+        qrButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clearCards();
+                launchReadQrFileIntent();
             }
         });
-        configureCards();
+        fileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launchReadFileIntent();
+            }
+        });
         // Read parameters. If there are no parameters, redirect to settings page
-        // Read application parameters
-        SettingsReader settingsReader = new SettingsFileReader();
-        parameters = settingsReader.read(SettingsFileReader.SETTINGS_FILE, getActivity());
+        readParametersFromConfigFile();
         if (null == parameters) {
             // Show a dialog telling the user to load parameters
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -139,62 +122,28 @@ public class MainFragment extends RoboFragment {
         }
     }
 
-    private void clearCards() {
-        voteCards.clearCards();
-        stacks.clear();
+    private void readParametersFromConfigFile() {
+        SettingsReader settingsReader = new SettingsFileReader();
+        parameters = settingsReader.read(SettingsFileReader.SETTINGS_FILE, getActivity());
     }
 
-    private void configureCards() {
-        voteCards.setSwipeable(false);
-    }
-
+    // Validate the vote with the input the user entered
     private void validateVoteWithInput(String input) {
-        showNoFileMessage(false);
-        showCards(true);
-        String fileName = fileText.getText().toString();
+        // Get the choice text
         String choice = choiceText.getText().toString();
-        for (Vote vote : votes) {
+        if (null != vote) {
+            Intent intent = new Intent(getActivity(), ResultActivity.class);
             try {
-                Boolean valid = vote.verify(input);
-                displayVote(fileName, choice, vote, valid);
+                Boolean valid = vote.verify(choice);
+                intent.putExtra(ResultActivity.VOTE_VALID,valid);
             } catch (InvalidParametersException e) {
-                displayError(fileName, choice, vote, getResources().getString(R.string.invalid_parameters), "#f2a400");
+                intent.putExtra(ResultActivity.VOTE_ERROR, "Invalid parameters");
             } catch (InvalidSignatureException e) {
-                displayError(fileName, choice, vote, getResources().getString(R.string.invalid_signature), "#ff33b6ea");
+                intent.putExtra(ResultActivity.VOTE_ERROR, "Invalid signature");
             }
+            startActivity(intent);
         }
-        voteCards.refresh();
-    }
 
-    private void showCards(boolean show) {
-        cardsContainer.setVisibility(View.VISIBLE);
-    }
-
-    private CardStack getStackForFile(String file) {
-        CardStack stack = stacks.get(file);
-        // If there is no stack for current file, create a new one
-        if (null == stack) {
-            stack = new CardStack("Votes in file  " + file);
-            stacks.put(file, stack);
-            voteCards.addStack(stack);
-        }
-        return stack;
-    }
-
-    private void displayVote(String file, String choice, Vote vote, Boolean valid) {
-        String color = valid ? "#4ac925" : "#e00707";
-        String description = getResources().getString(valid? R.string.valid_vote : R.string.invalid_vote);
-        VoteCard card = new VoteCard("Validation of choice  " + choice, description, color, color, false, false);
-        getStackForFile(file).add(card);
-    }
-
-    private void showNoFileMessage(boolean show) {
-        noFileLayout.setVisibility(show ? View.VISIBLE : View.GONE);
-    }
-
-    private void displayError(String file, String choice, Vote vote, String error, String color) {
-        VoteCard card = new VoteCard("Validation of choice " + choice, error, color, color, false, false);
-        getStackForFile(file).add(card);
     }
 
     private TextWatcher createTextWatcher() {
@@ -211,7 +160,8 @@ public class MainFragment extends RoboFragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if (choiceText.getText().length() > 0 && null != votes && votes.size() > 0 && null != parameters) {
+                // Only allow to validate a vote is there is vote to validate and user has entered an input
+                if (choiceText.getText().length() > 0 && null != vote && null != parameters) {
                     validateButton.setEnabled(true);
                 }
                 else {
@@ -225,19 +175,36 @@ public class MainFragment extends RoboFragment {
         // Use the GET_CONTENT intent from the utility class
         Intent target = FileUtils.createGetContentIntent();
         // Create the chooser Intent
-        Intent intent = Intent.createChooser(
-                target, getString(R.string.chooser_title));
-        try {
-            startActivityForResult(intent, REQUEST_CODE);
-        } catch (ActivityNotFoundException e) {
-            // The reason for the existence of aFileChooser
+        Intent intent = Intent.createChooser(target, null);
+        // Start the file reader
+        startActivityForResult(intent, READ_FILE_REQUEST_CODE);
+    }
+
+    public void launchReadQrFileIntent() {
+        // Create intent with the scanner activity to read a QR
+        Intent target = new Intent(getActivity(), ScannerActivity.class);
+        // Start QR Scanner
+        startActivityForResult(target, READ_QR_REQUEST_CODE);
+    }
+
+    private void handleVoteRead(Vote readVote) {
+        // Store the new vote
+        vote = readVote;
+        // If vote isn't null
+        if (null != vote) {
+            // Make the choice input visible
+            choiceText.setVisibility(View.VISIBLE);
+            // Focus the choice text input
+            choiceText.requestFocus();
+            // Make the validate button visible
+            validateButton.setVisibility(View.VISIBLE);
         }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case REQUEST_CODE:
+            case READ_FILE_REQUEST_CODE:
                 // If the file selection was successful
                 if (resultCode == getActivity().RESULT_OK) {
                     if (data != null) {
@@ -245,32 +212,33 @@ public class MainFragment extends RoboFragment {
                         final Uri uri = data.getData();
                         Log.i(TAG, "Uri = " + uri.toString());
                         try {
-
                             // Get the file path from the URI
                             final String path = FileUtils.getPath(getActivity(), uri);
-                            Toast.makeText(getActivity(),
-                                    "File Selected: " + path, Toast.LENGTH_LONG).show();
-                            // Get parameters
-                            SettingsReader settings = new SettingsFileReader();
-                            parameters = settings.read(SettingsFileReader.SETTINGS_FILE, getActivity());
+                            Toast.makeText(getActivity(), "File Selected: " + path, Toast.LENGTH_LONG).show();
+                            // Get parameters stored in config file (since they may have changed since startup)
+                            readParametersFromConfigFile();
                             // Get file name
                             String fileName = path.substring(path.lastIndexOf("/") + 1);
-                            // Update view to notify user what file is loaded at the moment
-                            fileText.setText(fileName);
                             // Create a file Reader with the selected path and current parameters
                             VoteReader reader = new VoteFileReader(path, parameters);
-                            // Display file text
-                            currentFileContainer.setVisibility(View.VISIBLE);
-                            // Read the votes in the file
-                            votes = reader.read();
-                            // Focus the choice text input
-                            choiceText.requestFocus();
+                            // Act depending on vote data
+                            handleVoteRead(reader.read());
                         } catch (Exception e) {
                             Log.e("FileSelectorTestActivity", "File select error", e);
                         }
                     }
                 }
                 break;
+            case READ_QR_REQUEST_CODE:
+                // If read process was successful
+                if (resultCode == getActivity().RESULT_OK) {
+                    Log.i(TAG, "Read from QR code");
+                    readParametersFromConfigFile();
+                    // Create a reader to parse the QR Data
+                    VoteReader reader = new VoteQrReader(data.getStringExtra(ScannerActivity.QR_DATA), parameters);
+                    // Act depending on vote data
+                    handleVoteRead(reader.read());
+                }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

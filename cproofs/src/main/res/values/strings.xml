@@ -23,7 +23,10 @@
     <string name="clear_button">Clear</string>
     <string name="current_file">Current file:</string>
     <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_scanner">Scan QR</string>
     <string name="settings_parameters_p_default">There is no parameter p</string>
     <string name="settings_parameters_q_default">There is no parameter q</string>
     <string name="settings_parameters_g_default">There is no parameter g</string>
+    <string name="title_activity_result">ResultActivity</string>
+
 </resources>

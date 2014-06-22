@@ -1,18 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <!-- Location Found -->
-    <item android:id="@+id/action_read_file"
-        android:icon="@drawable/ic_action_file"
-        android:title="@string/action_read_file"
-        android:showAsAction="always" />
-
-    <!-- Refresh -->
-    <item android:id="@+id/action_read_qr"
-        android:icon="@drawable/ic_action_qrcode"
-        android:title="@string/action_read_qr"
-        android:showAsAction="always" />
-
     <item android:id="@+id/action_settings"
         android:icon="@drawable/ic_action_settings"
         android:title="@string/action_settings"

@@ -38,17 +38,15 @@ public class VoteFileReader implements VoteReader {
     }
 
     @Override
-    public List<Vote> read() {
+    public Vote read() {
         File voteFile = new File(path);
         try {
             String jsonVoteData = org.apache.commons.io.FileUtils.readFileToString(voteFile);
             Gson gson = new Gson();
-            ElGamalVote[] votes = gson.fromJson(jsonVoteData, ElGamalVote[].class);
+            ElGamalVote vote = gson.fromJson(jsonVoteData, ElGamalVote.class);
             // Se vote parameters to the ones stored in the app (ignoring the ones that could have been present in the vote file)
-            for (ElGamalVote vote : votes) {
-                vote.setParameters(parameters);
-            }
-            return new ArrayList<Vote>(Arrays.asList(votes));
+            vote.setParameters(parameters);
+            return vote;
         } catch (IOException e) {
             e.printStackTrace();
         }

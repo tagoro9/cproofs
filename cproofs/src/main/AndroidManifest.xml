@@ -3,6 +3,7 @@
     package="com.scytl.cproofs" >
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -41,6 +42,15 @@
         <activity
             android:name="com.scytl.cproofs.activity.SettingsActivity"
             android:label="@string/title_activity_settings" >
+        </activity>
+        <activity
+            android:name="com.scytl.cproofs.activity.ScannerActivity"
+            android:label="@string/title_activity_scanner"
+            android:theme="@style/AppOverlayTheme" >
+        </activity>
+        <activity
+            android:name="com.scytl.cproofs.activity.ResultActivity"
+            android:label="@string/title_activity_result" >
         </activity>
     </application>
 

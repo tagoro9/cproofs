@@ -25,7 +25,6 @@ public class MainActivity extends RoboFragmentActivity {
         }
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         
@@ -40,16 +39,9 @@ public class MainActivity extends RoboFragmentActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_read_file) {
-            MainFragment fragment = (MainFragment) getSupportFragmentManager().findFragmentByTag("main_fragment");
-            fragment.launchReadFileIntent();
-        }
         if (id == R.id.action_settings) {
             Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
             startActivity(intent);
-        }
-        if (id == R.id.action_read_qr) {
-            return true;
         }
         return super.onOptionsItemSelected(item);
     }
