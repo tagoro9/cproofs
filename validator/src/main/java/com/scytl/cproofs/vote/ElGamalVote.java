@@ -26,7 +26,6 @@ public class ElGamalVote implements Vote {
     private ElGamalExtendedParameterSpec parameters;
     private ElGamalMessage message;
     private SchnorrSignature signature;
-    private BigInteger y;
 
     static {
         Security.addProvider(new BouncyCastleProvider());
@@ -35,12 +34,11 @@ public class ElGamalVote implements Vote {
     public ElGamalVote() {
     }
 
-    public ElGamalVote(Parameters parameters, Message message, Signature signature, BigInteger y) {
+    public ElGamalVote(Parameters parameters, Message message, Signature signature) {
         this();
         this.parameters = (ElGamalExtendedParameterSpec) parameters;
         this.message = (ElGamalMessage) message;
         this.signature = (SchnorrSignature) signature;
-        this.y = y;
     }
 
     @Override
@@ -77,11 +75,11 @@ public class ElGamalVote implements Vote {
         BigInteger t = signature.getT();
         BigInteger h = signature.getH();
         BigInteger c1 = parameters.getG().modPow(t, parameters.getP()).multiply(message.getGamma().modPow(h, parameters.getP())).mod(parameters.getP());
-        BigInteger c2 = y.modPow(t, parameters.getP());
+        BigInteger c2 = parameters.getY().modPow(t, parameters.getP());
         BigInteger c21 = message.getPhi().multiply(choice.modInverse(parameters.getP())).mod(parameters.getP());
         BigInteger c22 = c21.modPow(h, parameters.getP());
         c2 = c2.multiply(c22).mod(parameters.getP());
-        BigInteger hash = concatenateAndHash(parameters.getG(), y, c1, c2, message.getGamma(), message.getPhi());
+        BigInteger hash = concatenateAndHash(parameters.getG(), parameters.getY(), c1, c2, message.getGamma(), message.getPhi());
         return h.equals(hash);
     }
 

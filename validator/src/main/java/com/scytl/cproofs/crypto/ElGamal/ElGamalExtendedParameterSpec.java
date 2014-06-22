@@ -12,13 +12,15 @@ import java.math.BigInteger;
 public class ElGamalExtendedParameterSpec extends ElGamalParameterSpec implements Parameters {
 
     private BigInteger q;
+    private BigInteger y;
 
-    public ElGamalExtendedParameterSpec(BigInteger p, BigInteger g, BigInteger q) {
+    public ElGamalExtendedParameterSpec(BigInteger p, BigInteger g, BigInteger q, BigInteger y) {
         super(p, g);
         if (!check()) {
             throw new IllegalArgumentException("P should equal 2q + 1");
         }
         this.q = q;
+        this.y = y;
     }
 
     @Override
@@ -35,5 +37,13 @@ public class ElGamalExtendedParameterSpec extends ElGamalParameterSpec implement
 
     public void setQ(BigInteger q) {
         this.q = q;
+    }
+
+    public BigInteger getY() {
+        return y;
+    }
+
+    public void setY(BigInteger y) {
+        this.y = y;
     }
 }

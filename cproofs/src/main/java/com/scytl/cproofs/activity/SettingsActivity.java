@@ -16,6 +16,9 @@ import com.ipaulpro.afilechooser.utils.FileUtils;
 import com.scytl.cproofs.R;
 import com.scytl.cproofs.crypto.ElGamal.ElGamalExtendedParameterSpec;
 import com.scytl.cproofs.fragment.MainFragment;
+import com.scytl.cproofs.reader.ParametersFileReader;
+import com.scytl.cproofs.reader.ParametersQrReader;
+import com.scytl.cproofs.reader.ParametersReader;
 import com.scytl.cproofs.reader.SettingsFileReader;
 import com.scytl.cproofs.reader.SettingsReader;
 import com.scytl.cproofs.reader.VoteFileReader;
@@ -26,7 +29,8 @@ import roboguice.inject.InjectView;
 
 public class SettingsActivity extends RoboFragmentActivity {
 
-    private static final int REQUEST_CODE = 7586;
+    private static final int PARAMETERS_FILE_REQUEST_CODE = 7586;
+    private static final int PARAMETERS_QR_REQUEST_CODE = 7587;
     private static final String TAG = "SettingsActivity";
 
     @InjectView(R.id.settings_parameters_p)
@@ -67,7 +71,7 @@ public class SettingsActivity extends RoboFragmentActivity {
         Intent intent = Intent.createChooser(
                 target, getString(R.string.chooser_title));
         try {
-            startActivityForResult(intent, REQUEST_CODE);
+            startActivityForResult(intent, PARAMETERS_FILE_REQUEST_CODE);
         } catch (ActivityNotFoundException e) {
             // The reason for the existence of aFileChooser
         }
@@ -83,15 +87,34 @@ public class SettingsActivity extends RoboFragmentActivity {
             launchReadFileIntent();
         }
         if (id == R.id.action_read_qr) {
-            return true;
+            launchReadQrFileIntent();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void launchReadQrFileIntent() {
+        // Create intent with the scanner activity to read a QR
+        Intent target = new Intent(this, ScannerActivity.class);
+        // Start QR Scanner
+        startActivityForResult(target, PARAMETERS_QR_REQUEST_CODE);
+    }
+
+    private void storeParameters(ElGamalExtendedParameterSpec parameters) {
+        SettingsFileReader reader = new SettingsFileReader();
+        if (null != parameters) {
+            if (true == reader.write(parameters, this)) {
+                // Show parameters in screen
+                pText.setText(parameters.getP().toString());
+                qText.setText(parameters.getQ().toString());
+                gText.setText(parameters.getG().toString());
+            }
+        }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case REQUEST_CODE:
+            case PARAMETERS_FILE_REQUEST_CODE:
                 // If the file selection was successful
                 if (resultCode == RESULT_OK) {
                     if (data != null) {
@@ -105,24 +128,23 @@ public class SettingsActivity extends RoboFragmentActivity {
                             Toast.makeText(this,
                                     "File Selected: " + path, Toast.LENGTH_LONG).show();
                             // Create a file Reader with the selected path
-                            SettingsReader reader = new SettingsFileReader();
-                            // Read the votes in the file
-                            ElGamalExtendedParameterSpec parameters = reader.read(path);
+                            ParametersReader reader = new ParametersFileReader();
                             // Store parameters in settings file if they are valid
-                            if (null != parameters) {
-                                if (true == reader.write(parameters, this)) {
-                                    // Show parameters in screen
-                                    pText.setText(parameters.getP().toString());
-                                    qText.setText(parameters.getQ().toString());
-                                    gText.setText(parameters.getG().toString());
-                                }
-                            }
+                            storeParameters(reader.read(path));
                         } catch (Exception e) {
                             Log.e("FileSelectorTestActivity", "File select error", e);
                         }
                     }
                 }
                 break;
+            case PARAMETERS_QR_REQUEST_CODE:
+                if (resultCode == RESULT_OK) {
+                    Log.i(TAG, "Read from QR code");
+                    // Create a reader to parse the QR Data
+                    ParametersReader reader = new ParametersQrReader();
+                    // Act depending on vote data
+                    storeParameters(reader.read(data.getStringExtra(ScannerActivity.QR_DATA)));
+                }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

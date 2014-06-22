@@ -21,19 +21,6 @@ public class SettingsFileReader implements SettingsReader {
     public static String SETTINGS_FILE = "parameters.json";
 
     @Override
-    public ElGamalExtendedParameterSpec read(String path) {
-        File voteFile = new File(path);
-        try {
-            String jsonVoteData = org.apache.commons.io.FileUtils.readFileToString(voteFile);
-            Gson gson = new Gson();
-            return gson.fromJson(jsonVoteData, ElGamalExtendedParameterSpec.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    @Override
     public ElGamalExtendedParameterSpec read(String fileName, Context context) {
         try {
             FileInputStream fis = context.openFileInput(fileName);
