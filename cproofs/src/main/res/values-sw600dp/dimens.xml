@@ -28,5 +28,6 @@
     <dimen name="settings_parameter_text_size">30dp</dimen>
     <dimen name="settings_padding_left">40dp</dimen>
     <dimen name="settings_padding_right">40dp</dimen>
+    <dimen name="result_text_padding">10dp</dimen>
 
 </resources>

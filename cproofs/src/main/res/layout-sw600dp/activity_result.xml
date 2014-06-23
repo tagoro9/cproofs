@@ -25,6 +25,8 @@
         android:gravity="center"
         android:layout_weight="5"
         android:textSize="@dimen/result_text_size"
+        android:paddingLeft="@dimen/result_text_padding"
+        android:paddingRight="@dimen/result_text_padding"
         android:layout_gravity="center"
         android:textStyle="bold"
         android:textAlignment="center"

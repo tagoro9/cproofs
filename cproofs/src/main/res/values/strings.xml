@@ -17,7 +17,7 @@
     <string name="overflow">Menu Overflow</string>
     <string name="color_stripe">Color Stripe</string>
     <string name="valid_vote">Congratulations! The vote vote we just read is valid for the choice you entered.</string>
-    <string name="invalid_vote">Oops! It seems like the vote does not contain the choice you just entered. Maybe you misspelled it actually does not contain said choice. Try again!</string>
+    <string name="invalid_vote">Oops! It seems like the vote does not contain the choice you just entered. Maybe you misspelled it or it actually does not contain said choice. Try again!</string>
     <string name="invalid_parameters">The public parameters from the file are not valid. Maybe there is an error in the file. Try downloading it again.</string>
     <string name="invalid_signature">The signature within the file is not valid. Maybe there is an error in the file. Try downloading it again</string>
     <string name="clear_button">Clear</string>

@@ -134,9 +134,9 @@ public class MainFragment extends RoboFragment {
                 Boolean valid = vote.verify(choice);
                 intent.putExtra(ResultActivity.VOTE_VALID,valid);
             } catch (InvalidParametersException e) {
-                intent.putExtra(ResultActivity.VOTE_ERROR, R.string.invalid_parameters);
+                intent.putExtra(ResultActivity.VOTE_ERROR, getResources().getString(R.string.invalid_parameters));
             } catch (InvalidSignatureException e) {
-                intent.putExtra(ResultActivity.VOTE_ERROR, R.string.invalid_signature);
+                intent.putExtra(ResultActivity.VOTE_ERROR, getResources().getString(R.string.invalid_signature));
             }
             startActivity(intent);
         }
