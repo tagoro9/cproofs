@@ -36,7 +36,7 @@ public class SchnorrSignature implements Signature {
     public boolean check(BigInteger q) {
         if (
                 h.compareTo(BigInteger.ONE) == 1 &&
-                //h.compareTo(q.subtract(BigInteger.ONE)) == -1 &&
+                h.compareTo(q.subtract(BigInteger.ONE)) == -1 &&
                 t.compareTo(BigInteger.ONE) == 1 &&
                 t.compareTo(q.subtract(BigInteger.ONE)) == -1
         ) {

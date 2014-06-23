@@ -2,5 +2,32 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="result_img_padding">100dp</dimen>
+    <dimen name="result_img_margin_top">40dp</dimen>
+    <dimen name="result_text_size">20dp</dimen>
 
-    </resources>
+    <dimen name="main_top_padding">30dp</dimen>
+    <dimen name="main_logo_height">80dp</dimen>
+    <dimen name="main_title_padding_top">5dp</dimen>
+    <dimen name="main_title_margin_top">1dp</dimen>
+    <dimen name="main_title_text_size">15dp</dimen>
+    <dimen name="main_subtitle_padding">4dp</dimen>
+    <dimen name="main_subtitle_margin_top">1dp</dimen>
+    <dimen name="main_subtitle_text_size">15dp</dimen>
+    <dimen name="main_button_padding">15dp</dimen>
+    <dimen name="main_first_button_margin_top">25dp</dimen>
+    <dimen name="main_button_margin">30dp</dimen>
+    <dimen name="main_button_img_height">40dp</dimen>
+    <dimen name="main_button_img_padding_left">3dp</dimen>
+    <dimen name="main_button_text_margin_left">0dp</dimen>
+    <dimen name="main_button_text_size">15dp</dimen>
+    <dimen name="main_button_margin_top">5dp</dimen>
+
+    <dimen name="settings_padding">20dp</dimen>
+    <dimen name="settings_parameter_margin_top">20dp</dimen>
+    <dimen name="settings_parameter_margin_bottom">5dp</dimen>
+    <dimen name="settings_parameter_text_size">18dp</dimen>
+    <dimen name="settings_padding_left">30dp</dimen>
+    <dimen name="settings_padding_right">30dp</dimen>
+
+</resources>

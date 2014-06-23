@@ -1,6 +1,5 @@
 package com.scytl.cproofs.activity;
 
-import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
@@ -8,21 +7,17 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ipaulpro.afilechooser.utils.FileUtils;
 import com.scytl.cproofs.R;
 import com.scytl.cproofs.crypto.ElGamal.ElGamalExtendedParameterSpec;
-import com.scytl.cproofs.fragment.MainFragment;
 import com.scytl.cproofs.reader.ParametersFileReader;
 import com.scytl.cproofs.reader.ParametersQrReader;
 import com.scytl.cproofs.reader.ParametersReader;
 import com.scytl.cproofs.reader.SettingsFileReader;
 import com.scytl.cproofs.reader.SettingsReader;
-import com.scytl.cproofs.reader.VoteFileReader;
-import com.scytl.cproofs.reader.VoteReader;
 
 import roboguice.activity.RoboFragmentActivity;
 import roboguice.inject.InjectView;
@@ -39,6 +34,8 @@ public class SettingsActivity extends RoboFragmentActivity {
     private TextView qText;
     @InjectView(R.id.settings_parameters_g)
     private TextView gText;
+    @InjectView(R.id.settings_parameters_y)
+    private TextView yText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +50,7 @@ public class SettingsActivity extends RoboFragmentActivity {
             pText.setText(parameters.getP().toString());
             qText.setText(parameters.getQ().toString());
             gText.setText(parameters.getG().toString());
+            yText.setText(parameters.getPubkey().toString());
         }
     }
 
@@ -107,6 +105,7 @@ public class SettingsActivity extends RoboFragmentActivity {
                 pText.setText(parameters.getP().toString());
                 qText.setText(parameters.getQ().toString());
                 gText.setText(parameters.getG().toString());
+                yText.setText(parameters.getPubkey().toString());
             }
         }
     }

@@ -28,5 +28,11 @@
     <string name="settings_parameters_q_default">There is no parameter q</string>
     <string name="settings_parameters_g_default">There is no parameter g</string>
     <string name="title_activity_result">ResultActivity</string>
+    <string name="settings_parameters_y_default">There is no parameter pubkey</string>
+    <string name="parameters_missing_title">Parameters missing</string>
+    <string name="parameters_missing_desc">There are no cipher parameters stored. You need to provide one</string>
+    <string name="parameters_missing_toast">There are no parameters stored</string>
+    <string name="parameters_missing_ok">Ok</string>
+    <string name="parameters_missing_cancel">Cancel</string>
 
 </resources>

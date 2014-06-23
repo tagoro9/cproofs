@@ -1,7 +1,6 @@
 package com.scytl.cproofs.fragment;
 
 import android.app.AlertDialog;
-import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -31,8 +30,6 @@ import com.scytl.cproofs.reader.VoteFileReader;
 import com.scytl.cproofs.reader.VoteQrReader;
 import com.scytl.cproofs.reader.VoteReader;
 import com.scytl.cproofs.vote.Vote;
-
-import javax.xml.transform.Result;
 
 import roboguice.fragment.RoboFragment;
 import roboguice.inject.InjectView;
@@ -102,19 +99,19 @@ public class MainFragment extends RoboFragment {
         if (null == parameters) {
             // Show a dialog telling the user to load parameters
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setTitle("Parameters missing");
-            builder.setMessage("There are no cipher parameters stored. You need to provide one");
-            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            builder.setTitle(R.string.parameters_missing_title);
+            builder.setMessage(R.string.parameters_missing_desc);
+            builder.setPositiveButton(R.string.parameters_missing_ok, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     Intent intent = new Intent(getActivity(), SettingsActivity.class);
                     startActivity(intent);
                 }
             });
-            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            builder.setNegativeButton(R.string.parameters_missing_cancel, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog,int id) {
                     // cancel the alert box and put a Toast to the user
                     dialog.cancel();
-                    Toast.makeText(getActivity().getApplicationContext(), "There are no parameters stored",
+                    Toast.makeText(getActivity().getApplicationContext(), R.string.parameters_missing_toast,
                             Toast.LENGTH_LONG).show();
                 }
             });
@@ -137,9 +134,9 @@ public class MainFragment extends RoboFragment {
                 Boolean valid = vote.verify(choice);
                 intent.putExtra(ResultActivity.VOTE_VALID,valid);
             } catch (InvalidParametersException e) {
-                intent.putExtra(ResultActivity.VOTE_ERROR, "Invalid parameters");
+                intent.putExtra(ResultActivity.VOTE_ERROR, R.string.invalid_parameters);
             } catch (InvalidSignatureException e) {
-                intent.putExtra(ResultActivity.VOTE_ERROR, "Invalid signature");
+                intent.putExtra(ResultActivity.VOTE_ERROR, R.string.invalid_signature);
             }
             startActivity(intent);
         }

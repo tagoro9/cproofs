@@ -35,11 +35,11 @@ public class ResultActivity extends RoboActivity {
             resultImage.setImageResource(R.drawable.caution);
         }
         else if (true == voteValid) {
-            resultMessage.setText("The vote is valid");
+            resultMessage.setText(R.string.valid_vote);
             resultImage.setImageResource(R.drawable.check);
         }
         else {
-            resultMessage.setText("Vote is not valid");
+            resultMessage.setText(R.string.invalid_vote);
             resultImage.setImageResource(R.drawable.x);
         }
     }

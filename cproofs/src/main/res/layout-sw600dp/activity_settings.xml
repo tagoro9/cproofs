@@ -1,0 +1,107 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/amethyst"
+    android:paddingTop="@dimen/settings_padding"
+    android:paddingLeft="@dimen/settings_padding_left"
+    android:paddingRight="@dimen/settings_padding_right"
+    tools:context="${packageName}.${activityClass}">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="P"
+            android:layout_marginTop="@dimen/settings_parameter_margin_top"
+            android:layout_marginBottom="@dimen/settings_parameter_margin_bottom"
+            android:textSize="@dimen/settings_parameter_text_size"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textColor="@color/white"
+            android:text="@string/settings_parameters_p_default"
+            android:id="@+id/settings_parameters_p"
+            android:textSize="@dimen/settings_parameter_text_size"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textColor="@color/white"
+            android:text="Q"
+            android:layout_marginTop="@dimen/settings_parameter_margin_top"
+            android:layout_marginBottom="@dimen/settings_parameter_margin_bottom"
+            android:textSize="@dimen/settings_parameter_text_size"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textColor="@color/white"
+            android:text="@string/settings_parameters_q_default"
+            android:id="@+id/settings_parameters_q"
+            android:textSize="@dimen/settings_parameter_text_size"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:textColor="@color/white"
+            android:text="G"
+            android:layout_marginTop="@dimen/settings_parameter_margin_top"
+            android:layout_marginBottom="@dimen/settings_parameter_margin_bottom"
+            android:textSize="@dimen/settings_parameter_text_size"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textColor="@color/white"
+            android:text="@string/settings_parameters_g_default"
+            android:id="@+id/settings_parameters_g"
+            android:textSize="@dimen/settings_parameter_text_size"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:textColor="@color/white"
+            android:text="Y"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/settings_parameter_margin_top"
+            android:layout_marginBottom="@dimen/settings_parameter_margin_bottom"
+            android:textSize="@dimen/settings_parameter_text_size"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textColor="@color/white"
+            android:textSize="@dimen/settings_parameter_text_size"
+            android:text="@string/settings_parameters_y_default"
+            android:id="@+id/settings_parameters_y"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+</LinearLayout>
